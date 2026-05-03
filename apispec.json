@@ -187,6 +187,26 @@
         "tags": ["Task Management API"],
         "summary": "Get list task",
         "description": "Get list task",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status filter",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Search by title",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success get list task",
@@ -221,6 +241,29 @@
                           "due_date": {
                             "type": "string"
                           }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "page": {
+                          "type": "number"
+                        },
+                        "limit": {
+                          "type": "number"
+                        },
+                        "total_rows": {
+                          "type": "number"
+                        },
+                        "total_pages": {
+                          "type": "number"
+                        },
+                        "has_next": {
+                          "type": "boolean"
+                        },
+                        "has_prev": {
+                          "type": "boolean"
                         }
                       }
                     }
