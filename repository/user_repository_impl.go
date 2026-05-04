@@ -10,7 +10,7 @@ import (
 type UserRepositoryImpl struct {
 }
 
-func (repository *UserRepositoryImpl) InsertUser(ctx context.Context, tx *sql.DB, user domain.User) {
+func (repository *UserRepositoryImpl) InsertUser(ctx context.Context, tx *sql.Tx, user domain.User) {
 	sql := "INSERT INTO users(id ,name, email, password) VALUES ($1, $2, $3, $4)"
 	_, err := tx.ExecContext(ctx, sql, user.Id, user.Name, user.Email, user.Password)
 	if err != nil {
@@ -18,7 +18,7 @@ func (repository *UserRepositoryImpl) InsertUser(ctx context.Context, tx *sql.DB
 	}
 }
 
-func (repository *UserRepositoryImpl) FindByEmail(ctx context.Context, tx *sql.DB, email string) (domain.User, error) {
+func (repository *UserRepositoryImpl) FindByEmail(ctx context.Context, tx *sql.Tx, email string) (domain.User, error) {
 	sql := "select id, email, name, password from users WHERE email = $1"
 	rows, err := tx.QueryContext(ctx, sql, email)
 	if err != nil {
