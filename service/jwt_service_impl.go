@@ -12,6 +12,13 @@ type JWTServiceImpl struct {
 	issuer    string
 }
 
+func NewJWTService(secretKey string, issuer string) JWTService {
+	return &JWTServiceImpl{
+		secretKey: secretKey,
+		issuer: issuer,
+	}
+}
+
 func (j *JWTServiceImpl) GenerateToken(userId string) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userId,

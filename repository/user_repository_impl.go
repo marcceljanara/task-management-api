@@ -23,7 +23,7 @@ func (repository *UserRepositoryImpl) InsertUser(ctx context.Context, tx *sql.Tx
 }
 
 func (repository *UserRepositoryImpl) FindByEmail(ctx context.Context, tx *sql.Tx, email string) (domain.User, error) {
-	sql := "select id, email, name, password from users WHERE email = $1"
+	sql := "select id, email, name, password, created_at from users WHERE email = $1"
 	rows, err := tx.QueryContext(ctx, sql, email)
 	if err != nil {
 		panic(err)
@@ -31,7 +31,7 @@ func (repository *UserRepositoryImpl) FindByEmail(ctx context.Context, tx *sql.T
 	user := domain.User{}
 	defer rows.Close()
 	if rows.Next() {
-		err := rows.Scan(&user.Id, &user.Email, &user.Password)
+		err := rows.Scan(&user.Id, &user.Email, &user.Name, &user.Password, &user.CreatedAt)
 		if err != nil {
 			panic(err)
 		}

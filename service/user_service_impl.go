@@ -18,7 +18,16 @@ type UserServiceImpl struct {
 	UserRepository repository.UserRepository
 	JWTService JWTService
 	DB             *sql.DB
-	Validate       validator.Validate
+	Validate       *validator.Validate
+}
+
+func NewUserService(userRepository repository.UserRepository, jwtService JWTService, DB *sql.DB, validate *validator.Validate) UserService {
+	return &UserServiceImpl{
+		UserRepository: userRepository,
+		JWTService: jwtService,
+		DB: DB,
+		Validate: validate,
+	}
 }
 
 func (service *UserServiceImpl) Register(ctx context.Context, request web.UserCreateRequest) web.UserResponse {
