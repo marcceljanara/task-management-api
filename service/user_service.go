@@ -7,5 +7,5 @@ import (
 
 type UserService interface {
 	Register(ctx context.Context, request web.UserCreateRequest) web.UserResponse
-	Login(ctx context.Context, request web.UserLoginRequest) web.UserResponse
+	Login(ctx context.Context, request web.UserLoginRequest) (string)
 }
