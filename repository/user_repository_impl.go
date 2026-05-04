@@ -10,6 +10,10 @@ import (
 type UserRepositoryImpl struct {
 }
 
+func NewUserRepository() UserRepository {
+	return &UserRepositoryImpl{}
+}
+
 func (repository *UserRepositoryImpl) InsertUser(ctx context.Context, tx *sql.Tx, user domain.User) {
 	sql := "INSERT INTO users(id ,name, email, password) VALUES ($1, $2, $3, $4)"
 	_, err := tx.ExecContext(ctx, sql, user.Id, user.Name, user.Email, user.Password)
