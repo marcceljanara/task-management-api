@@ -20,8 +20,39 @@ func (repository *TaskRepositoryImpl) Save(ctx context.Context, db *sql.DB, task
 	return nil
 }
 
-func (repository *TaskRepositoryImpl) FindAll(ctx context.Context, db *sql.DB, userId string, limit int, offset int) ([]domain.Task, int, error) {
-	panic("not implemented") // TODO: Implement
+func (repository *TaskRepositoryImpl) FindAll(ctx context.Context, db *sql.DB, task domain.Task, limit int, offset int) ([]domain.Task, int, error) {
+	var tasks []domain.Task
+	var totalRows int
+	
+	query := `SELECT title, status, priority, due_date 
+	FROM tasks 
+	WHERE user_id = $1,
+	status = $2, 
+	LOWER(title) LIKE '$3%'
+	ORDER BY created_at DESC
+	LIMIT $4 OFFSET $5
+	`
+	rows, err := db.QueryContext(ctx, query, task.UserId, task.Status, task.Title, limit, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+	
+	defer rows.Close()
+
+	for rows.Next() {
+		var task domain.Task
+		rows.Scan(&task.Title, &task.Status, &task.Priority, &task.DueDate)
+		tasks = append(tasks, task)
+	}
+
+	countQuery := "SELECT COUNT(*) FROM tasks WHERE user_id = $1"
+	err = db.QueryRowContext(ctx, countQuery, task.UserId).Scan(&totalRows)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return tasks, totalRows, nil
+	 
 }
 
 func (repository *TaskRepositoryImpl) FindById(ctx context.Context, db *sql.DB, taskId string, userId string) (domain.Task, error) {
