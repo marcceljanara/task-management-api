@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"marcceljanara/task-management-api/app"
 	"marcceljanara/task-management-api/controller"
 	"marcceljanara/task-management-api/repository"
@@ -16,7 +17,10 @@ import (
 
 func main() {
 	_ = godotenv.Load()
-	db := app.NewDB()
+	db, err := app.NewDB()
+	if err != nil {
+		log.Fatal(err)
+	}
 	validate := validator.New()
 
 	secret := os.Getenv("JWT_SECRET")
@@ -34,9 +38,9 @@ func main() {
 		Handler: router,
 	}
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 }

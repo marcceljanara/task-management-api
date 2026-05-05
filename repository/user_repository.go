@@ -7,6 +7,6 @@ import (
 )
 
 type UserRepository interface {
-	InsertUser(ctx context.Context, tx *sql.Tx, user domain.User)
+	InsertUser(ctx context.Context, tx *sql.Tx, user domain.User) error
 	FindByEmail(ctx context.Context, tx *sql.Tx, email string) (domain.User, error)
 }
