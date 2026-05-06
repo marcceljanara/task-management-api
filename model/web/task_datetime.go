@@ -67,12 +67,12 @@ func parseTaskDueDate(value string) (time.Time, error) {
 		return time.Time{}, nil
 	}
 
-	if dueDate, err := time.ParseInLocation(TaskDateTimeLayout, value, time.Local); err == nil {
-		return dueDate, nil
+	if dueDate, err := time.ParseInLocation(TaskDateTimeLayout, value, time.UTC); err == nil {
+		return dueDate.UTC(), nil
 	}
 
 	if dueDate, err := time.Parse(time.RFC3339, value); err == nil {
-		return dueDate, nil
+		return dueDate.UTC(), nil
 	}
 
 	return time.Time{}, fmt.Errorf("due_date must use format %s", TaskDateTimeLayout)

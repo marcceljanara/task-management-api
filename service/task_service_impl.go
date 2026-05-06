@@ -61,7 +61,7 @@ func (service *TaskServiceImpl) Save(ctx context.Context, request web.TaskCreate
 		Description: request.Description,
 		Status:      request.Status,
 		Priority:    request.Priority,
-		DueDate:     request.DueDate,
+		DueDate:     request.DueDate.UTC(),
 	}
 
 	err = service.TaskRepository.Save(ctx, service.DB, task)
@@ -174,7 +174,7 @@ func (service *TaskServiceImpl) Update(ctx context.Context, request web.TaskUpda
 		Description: request.Description,
 		Status:      request.Status,
 		Priority:    request.Priority,
-		DueDate:     request.DueDate,
+		DueDate:     request.DueDate.UTC(),
 	}
 
 	err = service.TaskRepository.Update(ctx, service.DB, task)

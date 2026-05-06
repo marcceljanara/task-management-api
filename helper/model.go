@@ -15,7 +15,7 @@ func ToUserResponse(user domain.User) web.UserResponse {
 func ToTaskResponse(task domain.Task) web.TaskResponse {
 	dueDate := ""
 	if !task.DueDate.IsZero() {
-		dueDate = task.DueDate.Format(web.TaskDateTimeLayout)
+		dueDate = task.DueDate.UTC().Format(web.TaskDateTimeLayout)
 	}
 
 	return web.TaskResponse{
@@ -41,7 +41,7 @@ func ToTaskResponses(tasks []domain.Task) []web.TaskResponse {
 func ToTaskFindAllResponse(task domain.Task) web.TaskFindAllResponse {
 	dueDate := ""
 	if !task.DueDate.IsZero() {
-		dueDate = task.DueDate.Format(web.TaskDateTimeLayout)
+		dueDate = task.DueDate.UTC().Format(web.TaskDateTimeLayout)
 	}
 
 	return web.TaskFindAllResponse{
