@@ -2,6 +2,8 @@ package service
 
 import (
 	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -15,7 +17,7 @@ type JWTServiceImpl struct {
 func NewJWTService(secretKey string, issuer string) JWTService {
 	return &JWTServiceImpl{
 		secretKey: secretKey,
-		issuer: issuer,
+		issuer:    issuer,
 	}
 }
 
@@ -31,12 +33,22 @@ func (j *JWTServiceImpl) GenerateToken(userId string) (string, error) {
 }
 
 func (j *JWTServiceImpl) ValidateToken(tokenString string) (string, error) {
+	if strings.TrimSpace(tokenString) == "" {
+		return "", errors.New("token is required")
+	}
+
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (any, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
 		return []byte(j.secretKey), nil
 	})
 
-	if err != nil && !token.Valid {
+	if err != nil {
 		return "", err
+	}
+	if token == nil || !token.Valid {
+		return "", errors.New("invalid token")
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
@@ -44,6 +56,10 @@ func (j *JWTServiceImpl) ValidateToken(tokenString string) (string, error) {
 		return "", errors.New("invalid token claims")
 	}
 
-	userID := claims["user_id"].(string)
+	userID, ok := claims["user_id"].(string)
+	if !ok || strings.TrimSpace(userID) == "" {
+		return "", errors.New("invalid token user id")
+	}
+
 	return userID, nil
 }
