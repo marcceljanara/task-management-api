@@ -10,6 +10,6 @@ type Pagination struct {
 }
 
 type TasksResponse struct {
-	Data       []TaskResponse `json:"data"`
-	Pagination Pagination     `json:"pagination"`
+	Data       []TaskFindAllResponse `json:"data"`
+	Pagination Pagination            `json:"pagination"`
 }

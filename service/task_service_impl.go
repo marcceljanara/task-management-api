@@ -119,7 +119,7 @@ func (service *TaskServiceImpl) FindAll(ctx context.Context, request web.TaskQue
 	}
 
 	return web.TasksResponse{
-		Data: helper.ToTaskResponses(tasks),
+		Data: helper.ToTaskFindAllResponses(tasks),
 		Pagination: web.Pagination{
 			Page:       request.Page,
 			Limit:      request.Limit,

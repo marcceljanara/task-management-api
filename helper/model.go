@@ -37,3 +37,26 @@ func ToTaskResponses(tasks []domain.Task) []web.TaskResponse {
 	}
 	return taskResponses
 }
+
+func ToTaskFindAllResponse(task domain.Task) web.TaskFindAllResponse {
+	dueDate := ""
+	if !task.DueDate.IsZero() {
+		dueDate = task.DueDate.Format(web.TaskDateTimeLayout)
+	}
+
+	return web.TaskFindAllResponse{
+		Id:       task.Id,
+		Title:    task.Title,
+		Priority: task.Priority,
+		Status:   task.Status,
+		DueDate:  dueDate,
+	}
+}
+
+func ToTaskFindAllResponses(tasks []domain.Task) []web.TaskFindAllResponse {
+	taskResponses := make([]web.TaskFindAllResponse, 0, len(tasks))
+	for _, task := range tasks {
+		taskResponses = append(taskResponses, ToTaskFindAllResponse(task))
+	}
+	return taskResponses
+}

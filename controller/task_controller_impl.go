@@ -84,10 +84,10 @@ func (controller *TaskControllerImpl) GetAllTasks(writer http.ResponseWriter, re
 	}
 
 	response := struct {
-		Code       int                `json:"code"`
-		Status     string             `json:"status"`
-		Data       []web.TaskResponse `json:"data"`
-		Pagination web.Pagination     `json:"pagination"`
+		Code       int                       `json:"code"`
+		Status     string                    `json:"status"`
+		Data       []web.TaskFindAllResponse `json:"data"`
+		Pagination web.Pagination            `json:"pagination"`
 	}{
 		Code:       http.StatusOK,
 		Status:     "Berhasil mengambil daftar task",

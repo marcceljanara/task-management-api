@@ -38,9 +38,9 @@ func main() {
 	router.POST("/api/v1/login", userController.Login)
 	router.POST("/api/v1/tasks", middleware.ValidateJWT(jwtService, taskController.CreateTask))
 	router.GET("/api/v1/tasks", middleware.ValidateJWT(jwtService, taskController.GetAllTasks))
-	router.GET("/api/v1/task/:taskId", middleware.ValidateJWT(jwtService, taskController.GetTaskById))
-	router.PUT("/api/v1/task/:taskId", middleware.ValidateJWT(jwtService, taskController.UpdateTask))
-	router.DELETE("/api/v1/task/:taskId", middleware.ValidateJWT(jwtService, taskController.DeleteTask))
+	router.GET("/api/v1/tasks/:taskId", middleware.ValidateJWT(jwtService, taskController.GetTaskById))
+	router.PUT("/api/v1/tasks/:taskId", middleware.ValidateJWT(jwtService, taskController.UpdateTask))
+	router.DELETE("/api/v1/tasks/:taskId", middleware.ValidateJWT(jwtService, taskController.DeleteTask))
 
 	server := http.Server{
 		Addr:    "localhost:8080",
