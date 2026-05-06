@@ -3,10 +3,7 @@ package helper
 import (
 	"marcceljanara/task-management-api/model/domain"
 	"marcceljanara/task-management-api/model/web"
-	"time"
 )
-
-const dateTimeLayout = time.RFC3339
 
 func ToUserResponse(user domain.User) web.UserResponse {
 	return web.UserResponse{
@@ -18,7 +15,7 @@ func ToUserResponse(user domain.User) web.UserResponse {
 func ToTaskResponse(task domain.Task) web.TaskResponse {
 	dueDate := ""
 	if !task.DueDate.IsZero() {
-		dueDate = task.DueDate.Format(dateTimeLayout)
+		dueDate = task.DueDate.Format(web.TaskDateTimeLayout)
 	}
 
 	return web.TaskResponse{
