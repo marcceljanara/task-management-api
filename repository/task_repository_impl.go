@@ -8,6 +8,7 @@ import (
 	"marcceljanara/task-management-api/exception"
 	"marcceljanara/task-management-api/model/domain"
 	"strings"
+	"time"
 )
 
 type TaskRepositoryImpl struct {
@@ -100,8 +101,8 @@ func (repository *TaskRepositoryImpl) FindById(ctx context.Context, db *sql.DB, 
 }
 
 func (repository *TaskRepositoryImpl) Update(ctx context.Context, db *sql.DB, task domain.Task) error {
-	query := "UPDATE tasks SET title = $1, description = $2, status = $3, priority = $4, due_date = $5, updated_at = NOW() WHERE id = $6 AND user_id = $7"
-	result, err := db.ExecContext(ctx, query, task.Title, task.Description, task.Status, task.Priority, task.DueDate, task.Id, task.UserId)
+	query := "UPDATE tasks SET title = $1, description = $2, status = $3, priority = $4, due_date = $5, updated_at = $6 WHERE id = $7 AND user_id = $8"
+	result, err := db.ExecContext(ctx, query, task.Title, task.Description, task.Status, task.Priority, task.DueDate, time.Now().UTC(), task.Id, task.UserId)
 	if err != nil {
 		return err
 	}
